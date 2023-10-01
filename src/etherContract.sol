@@ -10,6 +10,7 @@ contract Shipping {
         string createdAt;
         string seelectedRate;
         string status;
+        uint256 id;
     }
 
     address owner;
@@ -20,7 +21,7 @@ contract Shipping {
     modifier onlyOwner() {
         require(owner == msg.sender);
         _;
-    }
+    } 
 
     constructor() {
         owner = msg.sender;
@@ -45,7 +46,8 @@ contract Shipping {
         shipment.createdAt = _createdAt;
         shipment.seelectedRate = _seelectedRate;
         shipment.status = _status;
-
+        shipment.id = numberOfShipments;
+        
         numberOfShipments++;
 
         return numberOfShipments - 1;

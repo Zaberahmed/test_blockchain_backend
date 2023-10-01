@@ -147,4 +147,41 @@ app.get('/inspecting-block', async (req: Request, res: Response) => {
 })
 
 
+app.get('/get-detail/:transaction_hash', async (req: Request, res: Response) => {
+    try {
+        const { transaction_hash } = req.params;
+        console.log(transaction_hash);
+
+        // Get the transaction receipt
+        const transactionReceipt = await provider.getTransactionReceipt(transaction_hash);
+        if (!transactionReceipt) {
+            console.error('Transaction not found or not yet mined.');
+            return;
+        }
+
+        // Decode the return data using the contract ABI
+        // const decodedData = newContract.interface.decodeFunctionResult(
+        //     transactionReceipt.logs[0].data
+        // );
+
+        // The decodedData will contain the JSON-like data
+        // console.log(decodedData);
+
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                block: transactionReceipt
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status: "error",
+            data: error
+        });
+    }
+})
+
+
 export default app;
