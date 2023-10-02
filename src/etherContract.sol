@@ -21,7 +21,7 @@ contract Shipping {
     modifier onlyOwner() {
         require(owner == msg.sender);
         _;
-    } 
+    }
 
     constructor() {
         owner = msg.sender;
@@ -47,7 +47,7 @@ contract Shipping {
         shipment.seelectedRate = _seelectedRate;
         shipment.status = _status;
         shipment.id = numberOfShipments;
-        
+
         numberOfShipments++;
 
         return numberOfShipments - 1;
