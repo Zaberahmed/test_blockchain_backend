@@ -22,8 +22,8 @@ const deploy = async function () {
     console.log("=================contractInstance=================");
     console.log("Deployed contract address - ", contractInstance.address);
 
-    console.log("=================deployedData=================");
-    console.log(deployedData);
+    // console.log("=================deployedData=================");
+    // console.log(deployedData);
 
     // const setNameInitialResponse = await contractInstance.setName("testContractMy");
     // await setNameInitialResponse.wait();

@@ -6,15 +6,16 @@ contract DataStorage {
 
     struct Data {
         string userId;
-        string username;
+        string email;
         string shipmentServiceCode;
         string carrierName;
         string createdAt;
         string status;
-        uint256 selectedRate;
-        uint256 noOfInstallments;
-        uint256 netPayable;
-        uint256 insuranceAmount;
+        string selectedRate;
+        string noOfInstallments;
+        string netPayable;
+        string insuranceAmount;
+        string paymentMethod;
         string[] instalmentDeadLine;
         string[] payableAmount;
         string[] paymentDate;
@@ -27,22 +28,21 @@ contract DataStorage {
     event DataCreated(
         bytes32 indexed transactionHash,
         string userId,
-        string username,
+        string email,
         string shipmentServiceCode,
         string carrierName,
         string createdAt,
         string status,
-        uint256 selectedRate,
-        uint256 noOfInstallments,
-        uint256 netPayable,
-        uint256 insuranceAmount
+        string selectedRate,
+        string noOfInstallments,
+        string netPayable,
+        string insuranceAmount,
+        string paymentMethod
     );
-
     event updateInstalmentData(
         string[] instalmentDeadLine,
-        string[] payableAmount
+        string[] payableAmounta
     );
-
     event StatusUpdated(bytes32 indexed transactionHash, string status);
     event PaidAmountUpdated(
         bytes32 indexed transactionHash,
@@ -64,22 +64,23 @@ contract DataStorage {
 
     function createData(
         string memory _userId,
-        string memory _username,
+        string memory _email,
         string memory _shipmentServiceCode,
         string memory _carrierName,
         string memory _createdAt,
         string memory _status,
-        uint256 _selectedRate,
-        uint256 _noOfInstallments,
-        uint256 _netPayable,
-        uint256 _insuranceAmount
+        string memory _selectedRate,
+        string memory _noOfInstallments,
+        string memory _netPayable,
+        string memory _insuranceAmount,
+        string memory _paymentMethod
     ) public onlyCreator {
         bytes32 transactionHash = keccak256(
-            abi.encodePacked(block.timestamp, msg.sender, _username)
+            abi.encodePacked(block.timestamp, msg.sender, _email)
         );
         Data storage newData = dataMap[transactionHash];
         newData.userId = _userId;
-        newData.username = _username;
+        newData.email = _email;
         newData.shipmentServiceCode = _shipmentServiceCode;
         newData.carrierName = _carrierName;
         newData.createdAt = _createdAt;
@@ -87,12 +88,13 @@ contract DataStorage {
         newData.selectedRate = _selectedRate;
         newData.noOfInstallments = _noOfInstallments;
         newData.netPayable = _netPayable;
+        newData.paymentMethod = _paymentMethod;
 
         dataKeys.push(transactionHash);
         emit DataCreated(
             transactionHash,
             _userId,
-            _username,
+            _email,
             _shipmentServiceCode,
             _carrierName,
             _createdAt,
@@ -100,7 +102,8 @@ contract DataStorage {
             _selectedRate,
             _noOfInstallments,
             _netPayable,
-            _insuranceAmount
+            _insuranceAmount,
+            _paymentMethod
         );
     }
 
@@ -108,7 +111,7 @@ contract DataStorage {
         bytes32 _transactionHash,
         string[] memory _instalmentDeadLine,
         string[] memory _payableAmount
-    ) public {
+    ) public onlyCreator {
         Data storage newData = dataMap[_transactionHash];
 
         newData.instalmentDeadLine = _instalmentDeadLine;
@@ -126,7 +129,7 @@ contract DataStorage {
     ) public onlyCreator {
         Data storage existingData = dataMap[_transactionHash];
         require(
-            bytes(existingData.username).length != 0,
+            bytes(existingData.email).length != 0,
             "Data with this transaction hash does not exist"
         );
 
@@ -135,14 +138,14 @@ contract DataStorage {
         emit StatusUpdated(_transactionHash, _status);
     }
 
-    function updatePaidAmount(
+    function updateInstalment(
         bytes32 _transactionHash,
         string memory _paidAmount,
         string memory _paymentDate
     ) public onlyCreator {
         Data storage existingData = dataMap[_transactionHash];
         require(
-            bytes(existingData.username).length != 0,
+            bytes(existingData.email).length != 0,
             "Data with this transaction hash does not exist"
         );
 
@@ -167,26 +170,27 @@ contract DataStorage {
         view
         returns (
             string memory userId,
-            string memory username,
+            string memory email,
             string memory shipmentServiceCode,
             string memory carrierName,
             string memory createdAt,
             string memory status,
-            uint256 selectedRate,
-            uint256 noOfInstallments,
-            uint256 netPayable,
-            uint256 insuranceAmount
+            string memory selectedRate,
+            string memory noOfInstallments,
+            string memory netPayable,
+            string memory insuranceAmount,
+            string memory paymentMethod
         )
     {
         Data storage data = dataMap[_transactionHash];
         require(
-            bytes(data.username).length != 0,
+            bytes(data.email).length != 0,
             "Data with this transaction hash does not exist"
         );
 
         return (
             data.userId,
-            data.username,
+            data.email,
             data.shipmentServiceCode,
             data.carrierName,
             data.createdAt,
@@ -194,7 +198,8 @@ contract DataStorage {
             data.selectedRate,
             data.noOfInstallments,
             data.netPayable,
-            data.insuranceAmount
+            data.insuranceAmount,
+            data.paymentMethod
         );
     }
 
@@ -212,7 +217,7 @@ contract DataStorage {
     {
         Data storage data = dataMap[_transactionHash];
         require(
-            bytes(data.username).length != 0,
+            bytes(data.email).length != 0,
             "Data with this transaction hash does not exist"
         );
 
