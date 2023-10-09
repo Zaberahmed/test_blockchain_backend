@@ -5,7 +5,7 @@ import express, {
   json,
   urlencoded,
 } from "express";
-import "dotenv/config";
+require("dotenv").config() 
 import cors from "cors";
 import { ethers } from "ethers";
 import config from "./config";

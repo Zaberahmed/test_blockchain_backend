@@ -1,5 +1,6 @@
 import app from "./app";
 import os from 'os';
+require("dotenv").config()
 
 const port = 8000;
 const networkInterfaces = os.networkInterfaces();
