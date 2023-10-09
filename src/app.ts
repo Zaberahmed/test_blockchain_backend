@@ -22,7 +22,7 @@ const Wallet = new ethers.Wallet(
 );
 
 const newContract: any = new ethers.Contract(
-  config.CONTRACT_ADDRESS,
+  `0x${config.CONTRACT_ADDRESS}`,
   ABI,
   provider
 );
@@ -76,7 +76,7 @@ listenForDataCreatedEvent().catch((error) => {
 app.get("/", async (req: Request, res: Response) => {
   try {
     const balance = await provider.getBalance(
-      config.METAMASK_WALLET_ACCOUNT_PUBLIC_KEY
+      `0x${config.METAMASK_WALLET_ACCOUNT_PUBLIC_KEY}`
     );
     console.log(`My ETH balance is --> ${ethers.utils.formatEther(balance)}`);
     res.send("My server is running !");
@@ -153,7 +153,7 @@ app.post(
       });
 
       //   const result = await provider.getTransaction({
-      //     to: config.CONTRACT_ADDRESS,
+      //     to: `0x${config.CONTRACT_ADDRESS}`,
       //     data: tx.data,
       //   });
       // const iface = new ethers.utils.Interface(ABI);
