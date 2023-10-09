@@ -15,6 +15,7 @@ const ABI = output.abi;
 const provider = new ethers.providers.JsonRpcProvider(
   `https://goerli.infura.io/v3/${config.INFURA_API_KEY}`
 );
+
 const Wallet = new ethers.Wallet(
   config.METAMASK_WALLET_ACCOUNT_PRIVATE_KEY,
   provider
