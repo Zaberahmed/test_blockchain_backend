@@ -1,8 +1,9 @@
 import app from "./app";
 import os from 'os';
-require("dotenv").config()
+import "dotenv/config";
+import config from "./config";
 
-const port = 8000;
+const port = config.PORT;
 const networkInterfaces = os.networkInterfaces();
 const wifiServerIP = networkInterfaces['Wi-Fi']?.[1]?.address;
 

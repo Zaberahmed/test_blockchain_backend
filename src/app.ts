@@ -5,7 +5,7 @@ import express, {
   json,
   urlencoded,
 } from "express";
-require("dotenv").config() 
+import "dotenv/config";
 import cors from "cors";
 import { ethers } from "ethers";
 import config from "./config";
@@ -22,7 +22,7 @@ const Wallet = new ethers.Wallet(
 );
 
 const newContract: any = new ethers.Contract(
-  `0x${config.CONTRACT_ADDRESS}`,
+  config.CONTRACT_ADDRESS,
   ABI,
   provider
 );
@@ -76,7 +76,7 @@ listenForDataCreatedEvent().catch((error) => {
 app.get("/", async (req: Request, res: Response) => {
   try {
     const balance = await provider.getBalance(
-      `0x${config.METAMASK_WALLET_ACCOUNT_PUBLIC_KEY}`
+      config.METAMASK_WALLET_ACCOUNT_PUBLIC_KEY
     );
     console.log(`My ETH balance is --> ${ethers.utils.formatEther(balance)}`);
     res.send("My server is running !");
@@ -153,7 +153,7 @@ app.post(
       });
 
       //   const result = await provider.getTransaction({
-      //     to: `0x${config.CONTRACT_ADDRESS}`,
+      //     to: config.CONTRACT_ADDRESS,
       //     data: tx.data,
       //   });
       // const iface = new ethers.utils.Interface(ABI);
